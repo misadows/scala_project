@@ -1,7 +1,8 @@
-@(message: String)
+@(reqForm: Form[utils.ReqData])(implicit messages: Messages)
 
 @main("Welcome to Play") {
-
-    @play20.welcome(message)
-
+    @helper.form(action = routes.Application.getData()) {
+        @helper.inputText(reqForm("criteria"))
+        <button>Submit</button>
+    }
 }
