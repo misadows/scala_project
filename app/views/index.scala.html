@@ -1,6 +1,6 @@
-@(reqForm: Form[utils.ReqData])(implicit messages: Messages)
+@(reqForm: Form[utils.ReqDataForm])(implicit messages: Messages)
 
-@main("Welcome to Play") {
+@main() {
     @helper.form(action = routes.Application.getData()) {
         @helper.inputText(reqForm("criteria"))
         <button>Submit</button>

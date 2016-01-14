@@ -1,0 +1,11 @@
+@(criteria: String, reqDataList: List[models.ReqData])(implicit messages: Messages)
+
+@main() {
+    <p>@criteria</p>
+    <ul>
+    @for(r <- reqDataList) {
+        <li>@r.data</li>
+    }
+    </ul>
+    <a href='@routes.Application.index()'>Go back</a>
+}

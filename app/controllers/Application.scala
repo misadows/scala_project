@@ -2,7 +2,7 @@ package controllers
 
 import javax.inject.Inject
 
-import models.Req
+import models.{ReqData, Req}
 import play.api.data.Form
 import play.api.data.Forms._
 import play.api.i18n.{MessagesApi, I18nSupport}
@@ -17,7 +17,7 @@ class Application @Inject()(val messagesApi: MessagesApi) extends Controller wit
   val f = Form(
     mapping(
       "criteria" -> text
-    )(ReqData.apply)(ReqData.unapply)
+    )(ReqDataForm.apply)(ReqDataForm.unapply)
   )
 
   def index = Action {
@@ -26,20 +26,19 @@ class Application @Inject()(val messagesApi: MessagesApi) extends Controller wit
 
   def getData = Action {
     implicit request => {
-      var r:String = ""
-
+      var id:Long = 0
       f.bindFromRequest.fold(
         formWithErrors => {
           BadRequest(views.html.index(f))
         },
-        ReqData => {
-          r = ReqData.criteria
-          Req.insert(Req(0, r))
+        ReqDataForm => {
+          id = Req.insert(Req(0, ReqDataForm.criteria))
+          val x = new Downloader(ReqDataForm.criteria.split(" "))
+          val data = x.getData()
+          for (i<-data) ReqData.insert(ReqData(0,i,id))
         }
       )
-      val x = new Downloader("password".split(" "))
-
-      Redirect(routes.Application.showRequests())
+      Redirect(routes.Application.showReqData(id))
     }
   }
 
@@ -47,4 +46,10 @@ class Application @Inject()(val messagesApi: MessagesApi) extends Controller wit
     Ok(Req.getAll.toString)
   }
 
+  def showReqData(id: Long) = Action {
+    Req.exists(id) match {
+      case true => Ok(views.html.reqdata(id.toString, ReqData.getAll(id)))
+      case false => NotFound(views.html.notfound("ReqData"))
+    }
+  }
 }
