@@ -1,7 +1,7 @@
 @(criteria: String, reqDataList: List[models.ReqData])(implicit messages: Messages)
 
 @main() {
-    <p>@criteria</p>
+    <h1>Criteria: @criteria</h1>
     <ul>
     @for(r <- reqDataList) {
         <li>@r.data</li>

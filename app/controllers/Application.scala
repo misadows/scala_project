@@ -48,7 +48,7 @@ class Application @Inject()(val messagesApi: MessagesApi) extends Controller wit
 
   def showReqData(id: Long) = Action {
     Req.exists(id) match {
-      case true => Ok(views.html.reqdata(id.toString, ReqData.getAll(id)))
+      case true => Ok(views.html.reqdata(Req.getCriteria(id), ReqData.getAll(id)))
       case false => NotFound(views.html.notfound("ReqData"))
     }
   }

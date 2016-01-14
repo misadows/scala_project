@@ -18,6 +18,13 @@ object Req{
     }
   }
 
+  def getCriteria(id: Long): String = DB.withConnection() {
+    implicit connection =>
+      val sql: SimpleSql[Row] = SQL("select * from Req where id = {id}").on("id" -> id)
+      val data = sql().map ( row => row[String]("criteria")).toList
+      data.head
+  }
+
   def getAll: List[Req] = DB.withConnection() {
     implicit connection =>
       sql().map ( row =>
@@ -36,8 +43,6 @@ object Req{
 case class ReqData(id: Long, data: String, req: Long)
 
 object ReqData{
-
-
   def insert(reqData: ReqData): Long = {
     DB.withConnection { implicit connection =>
       val id: Option[Long] = SQL("insert into ReqData(data, req) values ({criteria}, {req})")
