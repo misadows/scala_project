@@ -7,13 +7,13 @@ import org.jsoup.nodes.Element
 object Hi {
 	def main(args: Array[String]) = {
 		println("Hi! Enter search criteria: ") 				
+		val outFile = new java.io.PrintWriter("login-passwds.txt")
 		try { 
 			// Get the search criteria separated by " "
 			val criteria = readLine.split(" ")
 			val x = new Downloader(criteria)
-			val outFile = new java.io.PrintWriter("login-passwds.txt")
 			val browser = new Browser
-			for(i <- 7 to 9){
+			for(i <- 7 to 16){
 				//Get ith page of search
 				val doc = browser.get(x.getUrl(i))
 				println("Finished downloading page " + i.toString)
@@ -27,10 +27,12 @@ object Hi {
 				//Save results to a file
 				for(i <- resultList if (i.dropRight(1) contains "=") || (i.dropRight(1) contains ":")) outFile.println(i)
 			}
-			outFile.close
 		}
 		catch {
-		  case e: Exception => 
+		  case e: Exception => println(e.getStackTrace.mkString("\n"))
+		}
+		finally{
+			outFile.close
 		}
 	}
 }
