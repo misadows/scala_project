@@ -8,3 +8,4 @@ libraryDependencies +=
   "com.typesafe.akka" % "akka-actor_2.11" % "2.4.1";
 libraryDependencies += 
 "net.ruippeixotog" %% "scala-scraper" % "0.1.2";
+
