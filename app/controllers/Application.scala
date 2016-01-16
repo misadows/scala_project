@@ -33,9 +33,8 @@ class Application @Inject()(val messagesApi: MessagesApi) extends Controller wit
         },
         ReqDataForm => {
           id = Req.insert(Req(0, ReqDataForm.criteria))
-          val x = new Downloader(ReqDataForm.criteria.split(" "))
-          val data = x.getData()
-          for (i<-data) ReqData.insert(ReqData(0,i,id))
+          val x = new Downloader(id)
+          x.runActors(ReqDataForm.criteria.split(" "))
         }
       )
       Redirect(routes.Application.showReqData(id))
