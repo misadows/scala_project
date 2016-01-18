@@ -41,11 +41,11 @@ class StringConcatenatingActor(id: Long) extends Actor {
       this.result = this.result ::: res
       finishedDownloads += 1
 
-      /** Set number of pages to be downloaded here. */
+      /* Set number of pages to be downloaded here. */
       if (finishedDownloads > 15) {
         for (i <- this.result) ReqData.insert(ReqData(0, i, id))
         println("Sending result")
-        boss.map(_ ! "WUNGIEL PRZYWIEŹLIM")
+        boss.map(_ ! "Success")
       }
     }
     case _ => println("Error: message not recognized XDXDXDXD")
@@ -73,7 +73,7 @@ class PasswordDownloadingActor extends Actor {
     case DownloadPage(page: Int, criteria: Array[String]) =>
 
       //set a random proxy
-      val (proxy, port) = proxyList(Random.nextInt(10))
+      val (proxy, port) = proxyList(Random.nextInt(proxyList.length))
       ProxyUtils.setProxy(proxy, port)
 
       println("Trying to resolve " + proxy + ":" + port + "...")
