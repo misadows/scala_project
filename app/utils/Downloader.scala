@@ -42,13 +42,13 @@ class StringConcatenatingActor(id: Long) extends Actor {
       finishedDownloads += 1
 
       /* Set number of pages to be downloaded here. */
-      if (finishedDownloads > 15) {
+      if (finishedDownloads == 15) {
         for (i <- this.result) ReqData.insert(ReqData(0, i, id))
         println("Sending result")
         boss.map(_ ! "Success")
       }
     }
-    case _ => println("Error: message not recognized XDXDXDXD")
+    case _ => println("Error: message not recognized.")
   }
 }
 
@@ -65,8 +65,13 @@ class PasswordDownloadingActor extends Actor {
     ("134.119.20.197", 80),
     ("189.219.202.204", 10000),
     ("173.44.178.241", 1080),
-    ("220.226.188.171", 80)
-  )
+    ("220.226.188.171", 80),
+    ("61.191.27.117", 443), 
+    ("189.219.94.2", 10000),
+    ("81.94.162.140", 8080),
+    ("210.45.212.96", 1080),
+    ("121.42.142.104", 1080)
+    )
   var result: List[String] = List[String]()
 
   def receive = {
